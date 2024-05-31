@@ -1,89 +1,56 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using EspacioCalculadora;
-Calculadora Micalculadora = new Calculadora();
-int opcion = 1;
-while (opcion != 0)
+using System.Globalization;
+using Empleados;
+Empleado[] arreglo = new Empleado[2];
+for (int i = 0; i < arreglo.Length; i++)
 {
-    Console.WriteLine("/----------------CALCULADORA----------------/");
-    Console.WriteLine($"VALOR INICIALIZADO = {Micalculadora.Resultado}");
-    Console.WriteLine("1- Sumar");
-    Console.WriteLine("2- Restar");
-    Console.WriteLine("3- Multiplicar");
-    Console.WriteLine("4- Dividir");
-    Console.WriteLine("5- Limpiar");
-    Console.WriteLine("6- Cerrar Programa");
-    Console.WriteLine("Ingresar Opcion:");
-    int opcion2 = 0;
-    if (int.TryParse(Console.ReadLine(), out int menu))
-        {
-            switch (menu)
-            {
-                case 1:
-                Console.WriteLine("Introducir numero que va a sumar");
-                do
-                {
-                    if (double.TryParse(Console.ReadLine(),out double Value))
-                    {
-                        Micalculadora.Sumar(Value);
-                        opcion2 = 1;
-                    }else
-                    {
-                        Console.WriteLine("Linea no Valida, volver a ingresar una opcion");
-                    }
-                } while (opcion2 == 0);
-                break;
-                case 2:
-                Console.WriteLine("Introducir numero que va a restar");
-                do
-                {
-                    if (double.TryParse(Console.ReadLine(),out double Value))
-                    {
-                        Micalculadora.Restar(Value);
-
-                        opcion2 = 1;
-                    }else
-                    {
-                        Console.WriteLine("Linea no Valida, ingresar una opcion");
-                    }
-                } while (opcion2 == 0);           
-                break;
-                case 3:
-                Console.WriteLine("Introducir numero que va a multiplicar");
-                do
-                {
-                    if (double.TryParse(Console.ReadLine(),out  double Value))
-                    {
-                        Micalculadora.Multiplicar(Value);
-                        opcion2 = 1;
-                    }else
-                    {
-                        Console.WriteLine("Linea no Valida, ingresar un numero");
-                    }
-                } while (opcion2 == 0);
-                break;
-                case 4:
-                Console.WriteLine("Introducir numero va a dividir");
-                do
-                {
-                    if (double.TryParse(Console.ReadLine(),out double Value))
-                    {
-                        Micalculadora.dividir(Value);
-                        opcion2 = 1;
-                    }else
-                    {
-                        Console.WriteLine("Linea no Valida, ingresar un numero");
-                    } 
-                } while (opcion2 == 0);
-                break;
-                case 5:;
-                        Micalculadora.limpiar();
-
-                break;
-                case 6:
-                    opcion = 0;
-                break;                                                                                
-            }
-        }else{
-            Console.WriteLine("Linea no Valida, ingresar un numero entre (1 - 6)");
-        }
+    Console.WriteLine($"----Empleado {i+1}----");
+    arreglo[i] = new Empleado();
+    Console.Write("Ingrese nombre: ");
+    arreglo[i].Nombre = Console.ReadLine();
+    Console.Write("Ingrese apellido: ");
+    arreglo[i].Apellido = Console.ReadLine();
+    Console.Write("Fecha de nacimiento (dd/mm/aaaa): ");
+    if (DateTime.TryParseExact(Console.ReadLine(),"dd/MM/yyyy",null, System.Globalization.DateTimeStyles.None,out DateTime fecha))
+    {
+        arreglo[i].FechaNac = fecha;
+    }else{
+        Console.WriteLine("ERROR");
+    }
+    Console.Write("Estado civil (c: casado, s:soltero): ");
+    if (char.TryParse(Console.ReadLine(),out char dato))
+    {
+        arreglo[i].EstadoCivil = dato;
+    }
+    Console.Write("Fecha de ingreso (dd/mm/aaaa): ");
+        if (DateTime.TryParseExact(Console.ReadLine(),"dd/MM/yyyy",null, System.Globalization.DateTimeStyles.None,out DateTime fecha2))
+    {
+        arreglo[i].FechaIng = fecha2;
+    }else{
+        Console.WriteLine("ERROR");
+    }
+    Random random2 = new Random();
+    arreglo[i].SueldoBasico = random2.Next(300000, 1000000);
+    
+    Random random = new Random();
+    arreglo[i].Cargo = (Cargos)random.Next(0, 5);
 }
+for (int i = 0; i < arreglo.Length; i++)
+{
+    Console.WriteLine($"--Empleado nro {i+1}--");
+    arreglo[i].mostrar();
+    Console.WriteLine("");
+}
+int auxMayor = 0;
+int indice = 0;
+for (int a = 0; a < arreglo.Length; a++)
+{
+    if (arreglo[a].edades() > auxMayor)
+    {
+        auxMayor = arreglo[a].edades();
+        indice = a;
+    }
+}
+Console.WriteLine("");
+Console.WriteLine("EMPLEADO MAS VIEJO");
+arreglo[indice].mostrar();
